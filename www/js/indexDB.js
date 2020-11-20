@@ -1,5 +1,4 @@
-const listRestaurants = [
-    {
+const listRestaurants = [{
         r_name: "LA COLOMBLE",
         r_image: 'img/food1.jpg',
         r_type: 'Fast Food',
@@ -49,43 +48,78 @@ const listRestaurants = [
     },
 ]
 
-var db1;
-var request = window.indexedDB.open("Restaurant Database");
+var database1;
+var request = window.indexedDB.open("Restaurant Database", 1);
 request.onupgradeneeded = function(event) {
-    var db1 = event.target.result;
-    var objectStore = db1.createObjectStore("APPRATE_DB", { keyPath: "id", autoIncrement: true });
+    var database1 = event.target.result;
+    var objectStore = database1.createObjectStore("APPRATE_DB", { keyPath: "id", autoIncrement: true });
     for (var i in listRestaurants) {
         objectStore.add(listRestaurants[i])
     }
 };
 
+
 request.onsuccess = function(event) {
-    db1 = request.result;
-    console.log("success: " + db1);
+    database1 = request.result;
+    console.log("success: " + database1);
 };
 
-function ReqData(collectionName) {
-    const transaction1 = db1.transaction([collectionName], "readonly")
-    const objectStore = transaction1.objectStore(collectionName);
-    reqData = objectStore.getAll();
-    return reqData;
+function ReqData1() {
+    const transaction = database1.transaction(["APPRATE_DB"], "readonly")
+    const objectStore = transaction.objectStore("APPRATE_DB")
+    request = objectStore.getAll();
+    return request
 };
 
-function ReqAddData(collectionName, data) {
-    
+function ReqAddData(data) {
+    const reqAddData = database1.transaction(["APPRATE_DB"], "readwrite").objectStore("APPRATE_DB").add(data)
+    reqAddData.onsuccess = () => {
+        navigator.notification.beep(1);
+        navigator.vibrate(100)
+        alert("You Rated Successfully")
+        $(location).attr('href', "#index")
+        $('#restaurants').empty()
+        ReqAllData()
+    }
+    reqAddData.onerror = () => {
+        alert('Error Rate')
+    }
 };
 
 function ReqDetailsData(data) {
-    const detailsData = db1.transaction(["APPRATE_DB"], "readonly").objectStore("APPRATE_DB").get(Number(data))
-    detailsData.onerror = function() {
+    const reqDetailsData = database1.transaction(["APPRATE_DB"], "readonly").objectStore("APPRATE_DB").get(Number(data))
+    reqDetailsData.onerror = function() {
         alert("Error getting")
     }
-    return detailsData;
+    return reqDetailsData;
 };
 
 function ReqDeleteData(data) {
-    deleteData = Number(data)
-    return db1.transaction(["APPRATE_DB"], "readwrite").objectStore("APPRATE_DB").delete(deleteData)
+    reqDeleteData = Number(data)
+    return database1.transaction(["APPRATE_DB"], "readwrite").objectStore("APPRATE_DB").delete(reqDeleteData)
 };
 
+function validateData() {
+    var cost;
+    var service;
+    var clean;
+    var food;
 
+    cost = document.getElementById("r_cost").value;
+    if (isNaN(cost) || cost < 1) {
+        alert("Input AVG Cost not valid");
+    }
+
+    service = document.getElementById("rate_service_point").value;
+    if (isNaN(service) || service < 1 || service > 5) {
+        alert("Input Rate Service Point not valid");
+    }
+    clean = document.getElementById("rate_clean_point").value;
+    if (isNaN(clean) || clean < 1 || clean > 5) {
+        alert("Input Rate Clean Point not valid");
+    }
+    food = document.getElementById("rate_food_point").value;
+    if (isNaN(food) || food < 1 || food > 5) {
+        alert("Input Rate Food Point not valid");
+    }
+}

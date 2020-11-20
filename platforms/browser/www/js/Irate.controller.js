@@ -1,25 +1,24 @@
 function ReqAllData() {
-    const data_restaurant = ReqData("APPDATA_DB");
-    res.onsuccess = (event) => {
+    const data_restaurant = ReqData1();
+    data_restaurant.onsuccess = (event) => {
         const dataRes = event.target.result
         for (var i in dataRes.reverse()) {
-            let html =`
+            let html = `
             <div class="col-md-4 col-sm-6">
                 <div class="single-food">
                     <div class="food-img">
-                        <img src="${dataRes[i].id}" class="img-fluid" alt="">
+                        <img src="${dataRes[i].r_image}" class="img-fluid" alt="">
                     </div>
                     <div class="food-content">
                         <div class="d-flex justify-content-between">
-                            <h5>${dataRes[i].id}</h5>
-                            <span class="style-change">${dataRes[i].id}</span>
+                            <h5>${dataRes[i].r_name}</h5>
+                            <span class="style-change">${dataRes[i].rate_service_point}</span>
                         </div>
-                        <p class="pt-3">${dataRes[i].id}</p>
-                        <p class="pt-3">
-                            <div class="container">
-                                <button class="btn">Delete</button><button class="btn">Rate</button>  
-                              </div>
-                        </p>
+                        <p class="pt-3">${dataRes[i].r_description}</p>
+                    </div>
+                    <div class="food-footer">
+                        <button id="ReqDeleteData" rateId="${dataRes[i].id}" type="button" class="btn btn-primary">Delete</button> 
+                        <button id="ReqDetailsData" rateId="${dataRes[i].id}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#detailRestaurant">Details</button> 
                     </div>
                 </div>
             </div>      
@@ -34,9 +33,9 @@ $(window).on("load", function() {
 $(document).ready(function() {
     $('#index').on('click', function() {
         $('#restaurants').empty()
-        home()
+        ReqAllData()
     })
-    $('#feedback').on('submit', function (){
+    $(document).on('submit', '#feedback', function() {
         const feedback = {
             r_name: $('#r_name').val(),
             r_type: $('#r_type').val(),
@@ -47,51 +46,53 @@ $(document).ready(function() {
             r_cost: $('#r_cost').val(),
             r_datetime: $('#r_datetime').val(),
             r_description: $('#r_description').val(),
-            r_image: 'img/res.png'
+            r_image: 'img/food6.jpg'
         }
-        AddRes("APPDATA_DB", feedback)
+        ReqAddData(feedback)
         return false
     })
-    // $(document).on('click', '#DeleteRes', function() {
-    //     const rateid = $(this).attr("rateId")
-    //     const result = DeleteRes(rateid)
-    //     result.onsuccess = function() {
-    //         navigator.notification.beep(1);
-    //         navigator.vibrate(100)
-    //         $('#listrest').empty()
-    //     }
-    //     result.onerror = function() {
-    //         alert("Failed to delete")
-    //     }
-    //     return  home()
-    // })
+    $(document).on('click', '#ReqDeleteData', function() {
+        const rateid = $(this).attr("rateId")
+        const result = ReqDeleteData(rateid)
+        result.onsuccess = function() {
+            navigator.notification.beep(1);
+            navigator.vibrate(100)
+            $('#restaurants').empty()
+        }
+        result.onerror = function() {
+            alert("Failed to delete")
+        }
+        return ReqAllData()
+    })
 
-    // $(document).on('click', '#GetDetailsRes', function() {
-    //     const rateId = $(this).attr("rateId")
-    //     const result = GetDetailsRes(rateId)
-    //     result.onsuccess = function(event) {
-    //         $(location).attr('href', "#detail")
-    //         const Restaurant_Detail = event.target.result
-    //         const html = `
-    //         <div class="modal-dialog" role="document">
-    //             <div class="">
-    //             <div class="modal-header">
-    //                 <h5 class="modal-title" id="exampleModalLabel">${Restaurant_Detail.Restaurant_Name}</h5>
-    //                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-    //                 <span aria-hidden="true">&times;</span>
-    //                 </button>
-    //             </div>
-    //             <div class="modal-body">
-    //                 <h4 class="card-title">${Restaurant_Detail.Restaurant_Name}</h4>
-    //                 <p class="card-text">${Restaurant_Detail.Restaurant_Type}</p>
-    //             </div>
-    //             <div class="modal-footer">
-    //                 <button type="submit" class="btn btn-secondary" data-dismiss="modal" href="#homepage">Close</button>
-    //             </div>
-    //             </div>
-    //         </div>
-    //         `
-    //         $('#detail').empty().append(html)
-    //     }
-    // })
+    $(document).on('click', '#ReqDetailsData', function() {
+        const rateId = $(this).attr("rateId")
+        const result = ReqDetailsData(rateId)
+        result.onsuccess = function(event) {
+            $(location).attr('href', "#detailRestaurant")
+            const reqDetailsData = event.target.result
+            const html = `
+            <div class="modal-dialog" role="document">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">${reqDetailsData.r_name}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>${reqDetailsData.r_name}</p>
+                        <p>${reqDetailsData.r_type}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" href="#index">Close</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            `
+            $('#detailRestaurant').empty().append(html)
+        }
+    })
 })

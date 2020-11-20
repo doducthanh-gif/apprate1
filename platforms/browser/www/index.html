@@ -7,8 +7,7 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport"
-        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -53,7 +52,6 @@
             </div>
         </section>
         <!-- Banner Area End -->
-        <button><a href="#index">Home</a></button>
         <button><a href="rated.html">Feedback</a></button>
         <!-- Food Area starts -->
         <section class="food-area section-padding">
@@ -64,27 +62,29 @@
                             <h3><span class="style-change">Review</span> <br>The famous restaurants of Hanoi</h3>
                         </div>
                     </div>
-                    <div class="row" id="restaurants">
+                    <div class="row col-md-5" id="restaurants">
+                    </div>
+                    <div style="background-color: whitesmoke;" class="modal" id="detailRestaurant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     </div>
                 </div>
         </section>
-    </div>
-    <!-- Javascript -->
-    <script src="js/vendor/jquery-2.2.4.min.js"></script>
-    <script src="js/vendor/bootstrap-4.1.3.min.js"></script>
-    <script src="js/vendor/wow.min.js"></script>
-    <script src="js/vendor/owl-carousel.min.js"></script>
-    <script src="js/vendor/jquery.datetimepicker.full.min.js"></script>
-    <script src="js/vendor/jquery.nice-select.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/indexDB.js"></script>
+        </div>
+        <!-- Javascript -->
+        <script src="js/vendor/jquery-2.2.4.min.js"></script>
+        <script src="js/vendor/bootstrap-4.1.3.min.js"></script>
+        <script src="js/vendor/wow.min.js"></script>
+        <script src="js/vendor/owl-carousel.min.js"></script>
+        <script src="js/vendor/jquery.datetimepicker.full.min.js"></script>
+        <script src="js/vendor/jquery.nice-select.min.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/indexDB.js"></script>
 
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/Irate.controller.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-    </script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/Irate.controller.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script>
 </body>
 
 </html>
