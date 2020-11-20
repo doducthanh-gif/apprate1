@@ -74,8 +74,8 @@ function ReqData1() {
 function ReqAddData(data) {
     const reqAddData = database1.transaction(["APPRATE_DB"], "readwrite").objectStore("APPRATE_DB").add(data)
     reqAddData.onsuccess = () => {
-        navigator.notification.beep(1);
-        navigator.vibrate(100)
+        // navigator.notification.beep(1);
+        // navigator.vibrate(100)
         alert("You Rated Successfully")
         $(location).attr('href', "#index")
         $('#restaurants').empty()
